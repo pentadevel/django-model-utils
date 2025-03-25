@@ -267,6 +267,15 @@ class TrackedMultiple(models.Model):
     number_tracker = FieldTracker(fields=['number'])
 
 
+class TrackedProtectedSelfRefFK(models.Model):
+    fk = models.ForeignKey('Tracked', on_delete=models.PROTECT)
+    self_ref = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
+
+    tracker = FieldTracker()
+    custom_tracker = FieldTracker(fields=['fk_id', 'self_ref_id'])
+    custom_tracker_without_id = FieldTracker(fields=['fk', 'self_ref'])
+
+
 class TrackedFileField(models.Model):
     some_file = models.FileField(upload_to='test_location')
 
